@@ -3,6 +3,7 @@ defmodule Lifegame01Web.SceneLive do
   use Lifegame01Web, :live_view
 
   # three_scene.jsへのマウント
+  @spec mount(any(), any(), map()) :: {:ok, map()}
   def mount(_params, _session, socket) do
     # 初期配置
     cells = init_cells()
@@ -24,12 +25,14 @@ defmodule Lifegame01Web.SceneLive do
   # ---- ヘルパー ----
 
   # ワーキングプロセス
+  @spec handle_info(:main_loop, map()) :: {:noreply, map()}
   def handle_info(:main_loop, socket) do
     Process.send_after(self(), :main_loop, 250)
     {:noreply, main_loop(socket)}
   end
 
   # FPS表示更新
+  @spec handle_event(<<_::72>>, map(), map()) :: {:noreply, map()}
   def handle_event("updateFps", %{"fps" => fps}, socket) do
     socket =
       socket
@@ -39,11 +42,13 @@ defmodule Lifegame01Web.SceneLive do
   end
 
   # セルの縦横個数を送信
+  @spec send_cell_count(map(), integer(), integer()) :: map()
   def send_cell_count(socket, w, h) do
     push_event(socket, "sendCellCount", %{w: w, h: h})
   end
 
   # セルの生死状態マップを送信
+  @spec send_cell_alive_map(map(), map()) :: map()
   def send_cell_alive_map(socket, cells) do
     js_cells =
       cells
@@ -165,6 +170,7 @@ defmodule Lifegame01Web.SceneLive do
   end
 
   # メインループ
+  @spec main_loop(map()) :: map()
   def main_loop(socket) do
     new_cells = next_generation_cells(socket.assigns.cells)
 

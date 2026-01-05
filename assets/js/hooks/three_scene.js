@@ -160,14 +160,14 @@ const ThreeScene = {
 
         // ---- Elixirイベント定義 ----
 
-        // セルの縦横個数を要求
+        // セルの縦横個数を取得
         this.handleEvent("sendCellCount", (size) => {
             cellsWidth = size.w;
             cellsHeight = size.h;
             allCellObjectMap = createCubeMap(worldScene, cellsWidth, cellsHeight);
         });
 
-        // セルの生死状態マップを要求
+        // セルの生死状態マップを取得
         this.handleEvent("sendCellAliveMap", (cells) => {
             aliveMap = cells.cells;
             // キューブのループ
